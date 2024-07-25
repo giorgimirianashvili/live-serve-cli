@@ -1,60 +1,33 @@
-#!/usr/bin/env node
-
 import express from 'express';
-import meow from 'meow';
-import serveIndex from 'serve-index';
+const dictionaryOfCommands = {
+  help: "-h",
+  run: "-r",
+  port: "-p"
+};
+const command0 = process.argv[2];
+const port0 = process.argv[4];
 
-const cli = meow(
-  `
-  Usage
-    $ live-serve
-
-  Options
-    --help, -h     Show this help message
-    --port, -p     Set custom port (default: 80)
-    --host, -ho    Set custom host (default: localhost)
-    --dir, -d      Set custom directory (default: current directory)
-`,
-  {
-    importMeta: import.meta,
-    flags: {
-      help: {
-        type: 'boolean',
-        shortFlag: 'h',
-      },
-      port: {
-        type: 'number',
-        shortFlag: 'p',
-        default: 80,
-      },
-      host: {
-        type: 'string',
-        shortFlag: 'ho',
-        default: 'localhost',
-      },
-      dir: {
-        type: 'string',
-        shortFlag: 'd',
-        default: './',
-      },
-    },
-  }
-);
-
-if (cli.flags.help) {
-  cli.showHelp();
-} else {
-  const { dir, port, host } = cli.flags;
-
-  const app = express();
-
-  // Serve static files from the specified directory
-  app.use(express.static(dir));
-
-  // Use serve-index to list files if no index.html is found
-  app.use(serveIndex(dir, { icons: true }));
-
-  app.listen(port, host, () => {
-    console.log(`Server is running and serving ${dir} at http://${host}:${port}`);
-  });
+switch(command0){
+  case dictionaryOfCommands.help:
+    console.log(`
+      help: -h
+      run: -r (but you must specify a port, to do that you can write -p after -r argument e.g.: -r -p 3000)
+    `);
+  case dictionaryOfCommands.run:
+    if (port0){
+      const app = express();
+      app.use(express.json());
+      app.get('/', (req, res)=>{
+        res.json({ message: "hello world"})
+      });
+      app.listen(port0, ()=>{
+        console.log("App is listening on port=>",port0);
+      });
+    }else{
+      console.log("You must specify a port!");
+    }
+  case dictionaryOfCommands.port:
+    // no preconfigs allowed!
+  default:
+    console.log("You need to pass an argument! (use -h for help)");
 }
