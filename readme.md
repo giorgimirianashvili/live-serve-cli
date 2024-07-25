@@ -25,4 +25,4 @@ node index.js -r -p <port>
 ```
 
 # Author
-[giorgimirianashvili]('https://github.com/giorgimirianashvili');
+[giorgimirianashvili]('https://github.com/giorgimirianashvili')
