@@ -23,6 +23,3 @@ To start serving static files, open your terminal and run the following command:
 ```
 node index.js -r -p <port>
 ```
-
-# Author
-[giorgimirianashvili](https://github.com/giorgimirianashvili)
